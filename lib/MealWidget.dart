@@ -24,10 +24,12 @@ class MealWidget extends StatefulWidget {
 
 class MealState extends State<MealWidget> {
   void _incrementCounter() {
-    setState(() {
-      _counter++;
-      findCost(_counter, sizecost, additioncost);
-    });
+    if (_counter < 10) {
+      setState(() {
+        _counter++;
+        findCost(_counter, sizecost, additioncost);
+      });
+    }
   }
 
   void _decrementCounter() {
