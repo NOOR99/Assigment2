@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 
-int _counter = 0;
+int _counter = 1;
 int Cost = 0;
 bool isChecked = false;
 bool isChecked2 = false;
@@ -24,7 +24,7 @@ class MealWidget extends StatefulWidget {
 
 class MealState extends State<MealWidget> {
   void _incrementCounter() {
-    if (_counter < 10) {
+    if (_counter <= 10) {
       setState(() {
         _counter++;
         findCost(_counter, sizecost, additioncost);
@@ -33,7 +33,7 @@ class MealState extends State<MealWidget> {
   }
 
   void _decrementCounter() {
-    if (_counter > 0) {
+    if (_counter > 1) {
       setState(() {
         _counter--;
         findCost(_counter, sizecost, additioncost);
@@ -44,6 +44,8 @@ class MealState extends State<MealWidget> {
   int findCost(int count, int sizecost, int additioncost) {
     return Meal_Cost = (sizecost + additioncost) * count;
   }
+
+  int selectedValue = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +84,7 @@ class MealState extends State<MealWidget> {
               Padding(
                 padding: const EdgeInsets.fromLTRB(16, 15, 16, 8),
                 child: Text(
-                  '$Meal_Cost',
+                  findCost(_counter, sizecost, additioncost).toString(),
                   style: TextStyle(
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
@@ -160,8 +162,272 @@ class MealState extends State<MealWidget> {
             child: Text(" اختر من القائمة",
                 style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal)),
           ),
+          ListView.builder(
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            scrollDirection: Axis.vertical,
+            itemCount: 3,
+            itemBuilder: (BuildContext context, int index) {
+              return Row(
+                textDirection: TextDirection.rtl,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Text(
+                      'صنف ${index + 1}',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Text(
+                      '${(index + 1) * 7} ',
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                          color: Colors.grey),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  Spacer(),
+                  Radio(
+                    value: index,
+                    groupValue: selectedValue,
+                    onChanged: (index) {
+                      setState(() {
+                        selectedValue = index ?? selectedValue;
+                        sizecost = (index! + 1) * 7;
+                        findCost(_counter, sizecost, additioncost);
+                      });
+                    },
+                  ),
+                ],
+              );
+            },
+          ),
+          Column(
+            children: [
+              Divider(
+                color: Color.fromARGB(255, 219, 216, 216),
+                thickness: 5,
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 8, top: 16),
+                child: Row(textDirection: TextDirection.rtl, children: [
+                  Text(
+                    " اختيارك من الإضافات",
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  ),
+                  Text("( اختياري )",
+                      style: TextStyle(
+                          fontSize: 14, fontWeight: FontWeight.normal)),
+                ]),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 12),
+                child: Text(" اختر من القائمة",
+                    style:
+                        TextStyle(fontSize: 14, fontWeight: FontWeight.normal)),
+              ),
+              //////////////////////////////////////////////////الصنف الأول
+              Row(
+                textDirection: TextDirection.rtl,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                    child: Text(
+                      'جبنة',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Text(
+                      '5 ',
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                          color: Colors.grey),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  Spacer(),
+                  Checkbox(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(2.0),
+                    ),
+                    side: MaterialStateBorderSide.resolveWith(
+                      (states) => BorderSide(width: 1.0, color: Colors.grey),
+                    ),
+                    value: isChecked4,
+                    onChanged: (value) {
+                      setState(() {
+                        isChecked4 = value ?? false;
+                        if (isChecked4 == true) {
+                          additioncost += 5;
+                          findCost(_counter, sizecost, additioncost);
+                        } else {
+                          additioncost -= 5;
+                          findCost(_counter, sizecost, additioncost);
+                        }
+
+                        print(additioncost);
+                      });
+                    },
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16),
+                child: Divider(
+                  color: Color.fromARGB(255, 219, 216, 216),
+                  thickness: 3,
+                ),
+              ),
+              ////////////////////////////////الصنف الثاني
+              Row(
+                textDirection: TextDirection.rtl,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                    child: Text(
+                      'فطر',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Text(
+                      '7 ',
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                          color: Colors.grey),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  Spacer(),
+                  Checkbox(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(2.0),
+                    ),
+                    side: MaterialStateBorderSide.resolveWith(
+                      (states) => BorderSide(width: 1.0, color: Colors.grey),
+                    ),
+                    value: isChecked5,
+                    onChanged: (value) {
+                      setState(() {
+                        isChecked5 = value ?? false;
+                        if (isChecked5 == true) {
+                          additioncost += 7;
+                          findCost(_counter, sizecost, additioncost);
+                        } else {
+                          additioncost -= 7;
+                          findCost(_counter, sizecost, additioncost);
+                        }
+
+                        print(additioncost);
+                      });
+                    },
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: 16, right: 16),
+                child: Divider(
+                  color: Color.fromARGB(255, 219, 216, 216),
+                  thickness: 3,
+                ),
+              ),
+              ///////////////////////////////الصنف الثالث
+              Row(
+                textDirection: TextDirection.rtl,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
+                    child: Text(
+                      'بطاطا',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Text(
+                      '10',
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.normal,
+                          color: Colors.grey),
+                      textAlign: TextAlign.start,
+                    ),
+                  ),
+                  Spacer(),
+                  Checkbox(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(2.0),
+                    ),
+                    side: MaterialStateBorderSide.resolveWith(
+                      (states) => BorderSide(width: 1.0, color: Colors.grey),
+                    ),
+                    value: isChecked6,
+                    onChanged: (value) {
+                      setState(() {
+                        isChecked6 = value ?? false;
+                        if (isChecked6 == true) {
+                          additioncost += 10;
+                          findCost(_counter, sizecost, additioncost);
+                        } else {
+                          additioncost -= 10;
+                          findCost(_counter, sizecost, additioncost);
+                        }
+                        print(additioncost);
+                      });
+                    },
+                  ),
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // Perform an action when the button is pressed
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.blueAccent,
+                    ),
+                    child: const Text(
+                      'إضافة إلى السلة',
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+              )
+            ],
+          )
           //////////////////////////////////////////////////الصنف الأول
-          Row(
+          /* Row(
             textDirection: TextDirection.rtl,
             children: [
               Padding(
@@ -330,218 +596,7 @@ class MealState extends State<MealWidget> {
               ),
             ],
           ),
-          Divider(
-            color: Color.fromARGB(255, 219, 216, 216),
-            thickness: 5,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 8, top: 16),
-            child: Row(textDirection: TextDirection.rtl, children: [
-              Text(
-                " اختيارك من الإضافات",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              Text("( اختياري )",
-                  style:
-                      TextStyle(fontSize: 14, fontWeight: FontWeight.normal)),
-            ]),
-          ),
-          Padding(
-            padding: const EdgeInsets.only(right: 12),
-            child: Text(" اختر من القائمة",
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.normal)),
-          ),
-          //////////////////////////////////////////////////الصنف الأول
-          Row(
-            textDirection: TextDirection.rtl,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                child: Text(
-                  'جبنة',
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
-                  textAlign: TextAlign.start,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: Text(
-                  '5 ',
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.grey),
-                  textAlign: TextAlign.start,
-                ),
-              ),
-              Spacer(),
-              Checkbox(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(2.0),
-                ),
-                side: MaterialStateBorderSide.resolveWith(
-                  (states) => BorderSide(width: 1.0, color: Colors.grey),
-                ),
-                value: isChecked4,
-                onChanged: (value) {
-                  setState(() {
-                    isChecked4 = value ?? false;
-                    if (isChecked4 == true) {
-                      additioncost += 5;
-                      findCost(_counter, sizecost, additioncost);
-                    } else {
-                      additioncost -= 5;
-                      findCost(_counter, sizecost, additioncost);
-                    }
-
-                    print(additioncost);
-                  });
-                },
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 16, right: 16),
-            child: Divider(
-              color: Color.fromARGB(255, 219, 216, 216),
-              thickness: 3,
-            ),
-          ),
-          ////////////////////////////////الصنف الثاني
-          Row(
-            textDirection: TextDirection.rtl,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                child: Text(
-                  'فطر',
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
-                  textAlign: TextAlign.start,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: Text(
-                  '7 ',
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.grey),
-                  textAlign: TextAlign.start,
-                ),
-              ),
-              Spacer(),
-              Checkbox(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(2.0),
-                ),
-                side: MaterialStateBorderSide.resolveWith(
-                  (states) => BorderSide(width: 1.0, color: Colors.grey),
-                ),
-                value: isChecked5,
-                onChanged: (value) {
-                  setState(() {
-                    isChecked5 = value ?? false;
-                    if (isChecked5 == true) {
-                      additioncost += 7;
-                      findCost(_counter, sizecost, additioncost);
-                    } else {
-                      additioncost -= 7;
-                      findCost(_counter, sizecost, additioncost);
-                    }
-
-                    print(additioncost);
-                  });
-                },
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 16, right: 16),
-            child: Divider(
-              color: Color.fromARGB(255, 219, 216, 216),
-              thickness: 3,
-            ),
-          ),
-          ///////////////////////////////الصنف الثالث
-          Row(
-            textDirection: TextDirection.rtl,
-            children: [
-              Padding(
-                padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-                child: Text(
-                  'بطاطا',
-                  style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.black),
-                  textAlign: TextAlign.start,
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: Text(
-                  '10',
-                  style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.normal,
-                      color: Colors.grey),
-                  textAlign: TextAlign.start,
-                ),
-              ),
-              Spacer(),
-              Checkbox(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(2.0),
-                ),
-                side: MaterialStateBorderSide.resolveWith(
-                  (states) => BorderSide(width: 1.0, color: Colors.grey),
-                ),
-                value: isChecked6,
-                onChanged: (value) {
-                  setState(() {
-                    isChecked6 = value ?? false;
-                    if (isChecked6 == true) {
-                      additioncost += 10;
-                      findCost(_counter, sizecost, additioncost);
-                    } else {
-                      additioncost -= 10;
-                      findCost(_counter, sizecost, additioncost);
-                    }
-                    print(additioncost);
-                  });
-                },
-              ),
-            ],
-          ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  // Perform an action when the button is pressed
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blueAccent,
-                ),
-                child: const Text(
-                  'إضافة إلى السلة',
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ),
-            ),
-          ),
+          ,*/
         ],
       ),
     )));
