@@ -3,10 +3,6 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 
 int _counter = 1;
-int Cost = 0;
-bool isChecked = false;
-bool isChecked2 = false;
-bool isChecked3 = false;
 bool isChecked4 = false;
 bool isChecked5 = false;
 bool isChecked6 = false;
@@ -24,7 +20,7 @@ class MealWidget extends StatefulWidget {
 
 class MealState extends State<MealWidget> {
   void _incrementCounter() {
-    if (_counter <= 10) {
+    if (_counter < 10) {
       setState(() {
         _counter++;
         findCost(_counter, sizecost, additioncost);
